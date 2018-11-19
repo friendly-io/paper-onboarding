@@ -174,7 +174,7 @@ private extension OnboardingContentViewItem {
         
         informationImageHeightConstraint = imageView >>>- {
             $0.attribute = NSLayoutConstraint.Attribute.height
-            $0.constant = 188
+            $0.constant = 250
             return
         }
 
