@@ -34,10 +34,16 @@ open class OnboardingContentViewItem: UIView {
         guard let v = customView else { return }
         v.translatesAutoresizingMaskIntoConstraints = false
         customViewContainer?.addSubview(v)
-        NSLayoutConstraint.activate([
-            v.centerXAnchor.constraint(equalTo: cv.centerXAnchor),
-            v.centerYAnchor.constraint(equalTo: cv.centerYAnchor)
-            ])
+        if #available(iOS 9.0, *) {
+            NSLayoutConstraint.activate([
+                v.centerXAnchor.constraint(equalTo: cv.centerXAnchor),
+                v.centerYAnchor.constraint(equalTo: cv.centerYAnchor)
+                ])
+        } else {
+            // Fallback on earlier versions
+            v.addConstraint(NSLayoutConstraint(item: cv, attribute: .centerX, relatedBy: .equal, toItem: v, attribute: .centerX, multiplier: 1, constant: 0))
+            v.addConstraint(NSLayoutConstraint(item: cv, attribute: .centerY, relatedBy: .equal, toItem: v, attribute: .centerY, multiplier: 1, constant: 0))
+        }
     }
 }
 
