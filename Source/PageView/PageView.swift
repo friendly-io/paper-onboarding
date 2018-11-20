@@ -10,6 +10,8 @@ import UIKit
 
 class PageView: UIView {
 
+    var useParalax: Bool = false
+    
     var itemsCount = 3
     var itemRadius: CGFloat = 8.0
     var selectedItemRadius: CGFloat = 22.0
@@ -166,8 +168,12 @@ extension PageView {
         }
 
         let containerWidth = CGFloat(itemsCount + 1) * selectedItemRadius + space * CGFloat(itemsCount - 1)
-        let toValue = containerWidth / 2.0 - selectedItemRadius - (selectedItemRadius + space) * CGFloat(index)
-        containerX.constant = toValue
+        if useParalax {
+            let toValue = containerWidth / 2.0 - selectedItemRadius - (selectedItemRadius + space) * CGFloat(index)
+            containerX.constant = toValue
+        } else {
+            containerX.constant = 0
+        }
 
         if animated == true {
             UIView.animate(withDuration: duration,

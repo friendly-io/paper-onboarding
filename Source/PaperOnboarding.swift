@@ -54,15 +54,19 @@ open class PaperOnboarding: UIView {
     fileprivate let pageViewBottomConstant: CGFloat
     fileprivate var pageViewSelectedRadius: CGFloat = 22
     fileprivate var pageViewRadius: CGFloat = 8
+    
+    fileprivate var pageViewUseParalax: Bool = false
 
     fileprivate var fillAnimationView: FillAnimationView?
     fileprivate var pageView: PageView?
     fileprivate var gestureControl: GestureControl?
     fileprivate var contentView: OnboardingContentView?
     
-    public init(pageViewBottomConstant: CGFloat = 32) {
+    public init(pageViewBottomConstant: CGFloat = 3, pageViewRadius: CGFloat = 8, pageViewSelectedRadius: CGFloat = 22) {
         
         self.pageViewBottomConstant = pageViewBottomConstant
+        self.pageViewSelectedRadius = pageViewSelectedRadius
+        self.pageViewRadius = pageViewRadius
 
         super.init(frame: CGRect.zero)
     }
@@ -123,6 +127,11 @@ extension PaperOnboarding {
         if case let dataSource as PaperOnboardingDataSource = dataSource {
             pageViewSelectedRadius = dataSource.onboardingPageItemSelectedRadius()
         }
+        
+        if case let dataSource as PaperOnboardingDataSource = dataSource {
+            pageViewUseParalax = dataSource.onboardingPageItemsHaveParalax()
+        }
+        
         itemsInfo = createItemsInfo()
         translatesAutoresizingMaskIntoConstraints = false
         fillAnimationView = FillAnimationView.animationViewOnView(self, color: backgroundColor(currentIndex))
@@ -163,6 +172,7 @@ extension PaperOnboarding {
                 guard let dataSource = self?.dataSource as? PaperOnboardingDataSource else { return .white }
                 return dataSource.onboardingPageItemColor(at: $0)
         })
+        pageView.useParalax = pageViewUseParalax
 
         pageView.configuration = { [weak self] item, index in
             item.imageView?.image = self?.itemsInfo?[index].pageIcon

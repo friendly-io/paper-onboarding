@@ -46,7 +46,7 @@ class ViewController: UIViewController {
     }
 
     private func setupPaperOnboardingView() {
-        let onboarding = PaperOnboarding()
+        let onboarding = PaperOnboarding(pageViewBottomConstant: 3, pageViewRadius: 8, pageViewSelectedRadius: 8)
         onboarding.delegate = self
         onboarding.dataSource = self
         onboarding.translatesAutoresizingMaskIntoConstraints = false
@@ -115,6 +115,10 @@ extension ViewController: PaperOnboardingDataSource {
     //    func onboardingPageItemColor(at index: Int) -> UIColor {
     //        return [UIColor.white, UIColor.red, UIColor.green][index]
     //    }
+    
+    func onboardingPageItemsHaveParalax() -> Bool {
+        return true
+    }
 }
 
 

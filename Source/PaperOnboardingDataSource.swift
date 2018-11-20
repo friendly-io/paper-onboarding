@@ -47,6 +47,8 @@ public protocol PaperOnboardingDataSource {
     ///
     /// - Returns: selected state radius of the PageView Item
     func onboardingPageItemSelectedRadius() -> CGFloat
+    
+    func onboardingPageItemsHaveParalax() -> Bool
 }
 
 public extension PaperOnboardingDataSource {
@@ -61,5 +63,9 @@ public extension PaperOnboardingDataSource {
     
     func onboardingPageItemSelectedRadius() -> CGFloat {
         return 22
+    }
+    
+    func onboardingPageItemsHaveParalax() -> Bool {
+        return false
     }
 }
