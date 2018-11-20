@@ -169,7 +169,7 @@ private extension OnboardingContentViewItem {
         }
 
         (onView, label) >>>- { $0.attribute = .centerX; return }
-        descriptionBottomConstraint = (onView, label) >>>- { $0.attribute = .bottom; return }
+//        descriptionBottomConstraint = (onView, label) >>>- { $0.attribute = .bottom; $0.constant = -60; return }
 
         return label
     }
@@ -195,6 +195,7 @@ private extension OnboardingContentViewItem {
         }
         
         (onView, view) >>>- { $0.attribute = .centerX; return }
+        descriptionBottomConstraint = (onView, view) >>>- { $0.attribute = .bottom; return }
         
         return view
     }

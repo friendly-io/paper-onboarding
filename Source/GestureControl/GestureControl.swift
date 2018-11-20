@@ -45,6 +45,9 @@ class GestureControl: UIView {
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        return false
+    }
 }
 
 // MARK: actions

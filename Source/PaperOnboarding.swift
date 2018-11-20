@@ -61,7 +61,7 @@ open class PaperOnboarding: UIView {
 
     fileprivate var fillAnimationView: FillAnimationView?
     fileprivate var pageView: PageView?
-    fileprivate var gestureControl: GestureControl?
+//    fileprivate var gestureControl: GestureControl?
     fileprivate var contentView: OnboardingContentView?
     
     public init(pageViewBottomConstant: CGFloat = 3, pageViewRadius: CGFloat = 8, pageViewSelectedRadius: CGFloat = 22) {
@@ -142,12 +142,28 @@ extension PaperOnboarding {
                                                               itemsCount: itemsCount,
                                                               bottomConstant: pageViewBottomConstant * -1 - pageViewSelectedRadius)
         pageView = createPageView()
-        gestureControl = GestureControl(view: self, delegate: self)
+//        gestureControl = GestureControl(view: self, delegate: self)
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction))
         addGestureRecognizer(tapGesture)
+        
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(swipeHandler(_:)))
+        swipeLeft.direction = .left
+        swipeLeft.delegate = self
+        addGestureRecognizer(swipeLeft)
+        
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(swipeHandler(_:)))
+        swipeRight.delegate = self
+        swipeRight.direction = .right
+        addGestureRecognizer(swipeRight)
+        
+        
     }
 
+    @objc dynamic func swipeHandler(_ gesture: UISwipeGestureRecognizer) {
+        gestureControlDidSwipe(gesture.direction)
+    }
+    
     @objc fileprivate func tapAction(_ sender: UITapGestureRecognizer) {
         guard
             (delegate as? PaperOnboardingDelegate)?.enableTapsOnPageControl == true,
@@ -156,6 +172,7 @@ extension PaperOnboarding {
         else { return }
         let touchLocation = sender.location(in: self)
         let convertedLocation = pageControl.convert(touchLocation, from: self)
+        
         guard let pageItem = pageView.hitTest(convertedLocation, with: nil) else { return }
         let index = pageItem.tag - 1
         guard index != currentIndex else { return }
@@ -194,6 +211,15 @@ extension PaperOnboarding {
             items.append(info)
         }
         return items
+    }
+}
+
+extension PaperOnboarding: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view is UIButton {
+            return false
+        }
+        return true
     }
 }
 

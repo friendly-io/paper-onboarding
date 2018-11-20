@@ -21,30 +21,32 @@ class ViewController: UIViewController {
     @IBOutlet var skipButton: UIButton!
 
     
-    fileprivate let items = [
+    fileprivate func items(customButton: UIButton)->[OnboardingItemInfo]{ return [
         OnboardingItemInfo(informationImage: Asset.hotels.image,
                            title: "Hotels",
                            description: "All hotels and hostels are sorted by hospitality rating",
                            customView: customButton,
                            pageIcon: Asset.key.image,
                            color: UIColor(red: 0.40, green: 0.56, blue: 0.71, alpha: 1.00),
-                           titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
+                           titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: ViewController.titleFont, descriptionFont: ViewController.descriptionFont),
         
         OnboardingItemInfo(informationImage: Asset.banks.image,
                            title: "Banks",
                            description: "We carefully verify all banks before add them into the app",
                            pageIcon: Asset.wallet.image,
                            color: UIColor(red: 0.40, green: 0.69, blue: 0.71, alpha: 1.00),
-                           titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
+                           titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: ViewController.titleFont, descriptionFont: ViewController.descriptionFont),
         
         OnboardingItemInfo(informationImage: Asset.stores.image,
                            title: "Stores",
                            description: "All local stores are categorized for your convenience",
                            pageIcon: Asset.shoppingCart.image,
                            color: UIColor(red: 0.61, green: 0.56, blue: 0.74, alpha: 1.00),
-                           titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
+                           titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: ViewController.titleFont, descriptionFont: ViewController.descriptionFont),
         
-        ]
+        ]}
+    
+    var items: [OnboardingItemInfo] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,8 +57,14 @@ class ViewController: UIViewController {
         view.bringSubviewToFront(skipButton)
     }
 
+    @objc func customButtonAction(_ sender: UIButton) {
+        print("Click!")
+    }
+    
     private func setupPaperOnboardingView() {
-        let onboarding = PaperOnboarding(pageViewBottomConstant: 3, pageViewRadius: 8, pageViewSelectedRadius: 8)
+        customButton.addTarget(self, action: #selector(ViewController.customButtonAction(_:)), for: .touchUpInside)
+        items = items(customButton: customButton)
+        let onboarding = PaperOnboarding(pageViewBottomConstant: 70, pageViewRadius: 8, pageViewSelectedRadius: 8)
         onboarding.delegate = self
         onboarding.dataSource = self
         onboarding.translatesAutoresizingMaskIntoConstraints = false
