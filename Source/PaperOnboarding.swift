@@ -12,6 +12,7 @@ public struct OnboardingItemInfo {
     public let informationImage: UIImage
     public let title: String
     public let description: String
+    public let customView: UIView?
     public let pageIcon: UIImage
     public let color: UIColor
     public let titleColor: UIColor
@@ -19,10 +20,11 @@ public struct OnboardingItemInfo {
     public let titleFont: UIFont
     public let descriptionFont: UIFont
     
-    public init (informationImage: UIImage, title: String, description: String, pageIcon: UIImage, color: UIColor, titleColor: UIColor, descriptionColor: UIColor, titleFont: UIFont, descriptionFont: UIFont) {
+    public init (informationImage: UIImage, title: String, description: String, customView: UIView? = nil, pageIcon: UIImage, color: UIColor, titleColor: UIColor, descriptionColor: UIColor, titleFont: UIFont, descriptionFont: UIFont) {
         self.informationImage = informationImage
         self.title = title
         self.description = description
+        self.customView = customView
         self.pageIcon = pageIcon
         self.color = color
         self.titleColor = titleColor

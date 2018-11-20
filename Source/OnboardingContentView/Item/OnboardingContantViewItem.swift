@@ -18,6 +18,7 @@ open class OnboardingContentViewItem: UIView {
     open var imageView: UIImageView?
     open var titleLabel: UILabel?
     open var descriptionLabel: UILabel?
+    open var customViewContainer: UIView?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,6 +27,17 @@ open class OnboardingContentViewItem: UIView {
 
     public required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setCustomView(_ customView: UIView?) {
+        guard let cv = customViewContainer else { return }
+        guard let v = customView else { return }
+        v.translatesAutoresizingMaskIntoConstraints = false
+        customViewContainer?.addSubview(v)
+        NSLayoutConstraint.activate([
+            v.centerXAnchor.constraint(equalTo: cv.centerXAnchor),
+            v.centerYAnchor.constraint(equalTo: cv.centerYAnchor)
+            ])
     }
 }
 
@@ -71,11 +83,14 @@ extension OnboardingContentViewItem {
 
 private extension OnboardingContentViewItem {
 
+    
+    
     func commonInit() {
 
         let titleLabel = createTitleLabel(self)
         let descriptionLabel = createDescriptionLabel(self)
         let imageView = createImage(self)
+        let customViewContainer = createCustomViewContainer(self)
 
         // added constraints
         titleCenterConstraint = (self, titleLabel, imageView) >>>- {
@@ -90,10 +105,15 @@ private extension OnboardingContentViewItem {
             $0.constant = 10
             return
         }
-
+        (self, customViewContainer, descriptionLabel) >>>- {
+            $0.attribute = .top
+            $0.secondAttribute = .bottom
+            $0.constant = 10
+        }
         self.titleLabel = titleLabel
         self.descriptionLabel = descriptionLabel
         self.imageView = imageView
+        self.customViewContainer = customViewContainer
     }
 
     func createTitleLabel(_ onView: UIView) -> UILabel {
@@ -147,13 +167,46 @@ private extension OnboardingContentViewItem {
 
         return label
     }
+    
+    func createCustomViewContainer(_ onView: UIView) -> UIView {
+        let view = Init(createCustomViewContainer()) {_ in
+            
+        }
+        onView.addSubview(view)
 
+        view >>>- {
+            $0.attribute = .height
+            $0.constant = 50
+            $0.relation = .equal
+            return
+        }
+        for (attribute, constant) in [(NSLayoutConstraint.Attribute.leading, 30), (NSLayoutConstraint.Attribute.trailing, -30)] {
+            (onView, view) >>>- {
+                $0.attribute = attribute
+                $0.constant = CGFloat(constant)
+                return
+            }
+        }
+        
+        (onView, view) >>>- { $0.attribute = .centerX; return }
+        
+        return view
+    }
+    
+    
     func createLabel() -> UILabel {
         return Init(UILabel(frame: CGRect.zero)) {
             $0.backgroundColor = .clear
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.textAlignment = .center
             $0.textColor = .white
+        }
+    }
+    
+    func createCustomViewContainer() -> UIView {
+        return Init(UIView(frame: CGRect.zero)) {
+            $0.backgroundColor = .clear
+            $0.translatesAutoresizingMaskIntoConstraints = false
         }
     }
 

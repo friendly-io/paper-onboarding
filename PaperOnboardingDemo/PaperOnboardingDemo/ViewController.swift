@@ -8,14 +8,24 @@
 
 import UIKit
 
+
+let customButton : UIButton = {
+    let button = UIButton()
+    button.setTitle("YO!", for: .normal)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
+}()
+
 class ViewController: UIViewController {
 
     @IBOutlet var skipButton: UIButton!
 
+    
     fileprivate let items = [
         OnboardingItemInfo(informationImage: Asset.hotels.image,
                            title: "Hotels",
                            description: "All hotels and hostels are sorted by hospitality rating",
+                           customView: customButton,
                            pageIcon: Asset.key.image,
                            color: UIColor(red: 0.40, green: 0.56, blue: 0.71, alpha: 1.00),
                            titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
