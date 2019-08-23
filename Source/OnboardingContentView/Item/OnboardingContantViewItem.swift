@@ -102,13 +102,13 @@ private extension OnboardingContentViewItem {
         titleCenterConstraint = (self, titleLabel, imageView) >>>- {
             $0.attribute = .top
             $0.secondAttribute = .bottom
-            $0.constant = 50
+            $0.constant = 100
             return
         }
         (self, descriptionLabel, titleLabel) >>>- {
             $0.attribute = .top
             $0.secondAttribute = .bottom
-            $0.constant = 10
+            $0.constant = 15
             return
         }
         (self, customViewContainer, descriptionLabel) >>>- {
@@ -182,7 +182,7 @@ private extension OnboardingContentViewItem {
 
         view >>>- {
             $0.attribute = .height
-            $0.constant = 50
+            $0.constant = 0
             $0.relation = .equal
             return
         }
